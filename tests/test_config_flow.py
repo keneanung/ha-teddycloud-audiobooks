@@ -139,6 +139,20 @@ class CatalogMigration(unittest.IsolatedAsyncioTestCase):
             await self.manager.choose_segment(1)
         self.manager.reconcile.assert_not_awaited()
 
+    async def test_shutdown_does_not_remove_its_one_time_listener_twice(self):
+        listener = Mock()
+        self.manager.stop_unsub = listener
+        self.manager.stop(SimpleNamespace(event_type='homeassistant_stop'))
+        listener.assert_not_called()
+        self.assertFalse(self.manager.running)
+
+    async def test_unload_removes_shutdown_listener(self):
+        listener = Mock()
+        self.manager.stop_unsub = listener
+        self.manager.stop(None)
+        listener.assert_called_once()
+        self.assertIsNone(self.manager.stop_unsub)
+
 
 @unittest.skipIf(ConfigFlow is None, 'Requires the Home Assistant runtime')
 class Lifecycle(unittest.IsolatedAsyncioTestCase):

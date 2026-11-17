@@ -96,6 +96,7 @@ class Manager:
         self.retry_at = 0
         self.running = True
         self.unsubs = []
+        self.stop_unsub = None
 
     async def load(self):
         data = await self.store.async_load() or {}
@@ -148,11 +149,15 @@ class Manager:
                 self.unsubs.append(await mqtt.async_subscribe(self.hass, topic, self.message, qos=0))
         self.unsubs.append(await mqtt.async_subscribe(self.hass, f'{self.cfg["topic"]}/status', self.status, qos=0))
         self.unsubs.append(async_track_time_interval(self.hass, self.tick, timedelta(seconds=1)))
-        self.unsubs.append(self.hass.bus.async_listen_once("homeassistant_stop", self.stop))
+        self.stop_unsub = self.hass.bus.async_listen_once("homeassistant_stop", self.stop)
 
     @callback
     def stop(self, event):
         self.running = False
+        # A one-time event listener has already removed itself before calling us.
+        if event is None and self.stop_unsub is not None:
+            self.stop_unsub()
+        self.stop_unsub = None
         for unsub in self.unsubs:
             unsub()
         self.unsubs.clear()
