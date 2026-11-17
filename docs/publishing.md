@@ -3,19 +3,18 @@
 This is a standalone Git repository at `~/git/teddycloud-audiobooks`.
 The household deployment configuration remains in the separate `homeDeployment`
 repository.
-No public repository, release or catalog submission is created by this work.
-The intended repository is `keneanung/teddycloud-audiobooks`; the manifest URLs
-and codeowner target that location. If choosing another name/owner, change those
-fields before publishing.
+The public repository is `keneanung/ha-teddycloud-audiobooks`. The manifest URLs
+and codeowner target that location. Releases and catalog submission are separate
+steps.
 
 1. Publish **only this directory's contents at repository root** to a public
    GitHub repository. Do not publish household configuration, backups or media.
    Set a description and topics (for example home-assistant, marketplace,
    teddycloud, audiobook), enable issues, and retain the MIT license.
 2. Ensure `.github/workflows/validate.yml` runs from that repository root.
-   HACS validation and hassfest must pass without ignored checks. The workflow
-   is supplied but its GitHub-only validation has not yet run on a published
-   repository. Local/runtime tests are a separate check.
+   HACS validation and hassfest must pass without ignored checks. The first published run identified missing repository description/topics and
+   unsorted manifest keys; ensure the corrected revision passes. Local/runtime
+   tests are a separate check.
 3. Resolve any upstream-validator findings, then make a GitHub release matching
    `manifest.json` version `0.1.0`. A tag alone is not sufficient for catalog
    inclusion. The normal repository layout does not require a release ZIP.

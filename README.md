@@ -17,9 +17,9 @@ other versions and Toniebox 2 are not verified.
 
 <!-- ha-marketplace:exclude-start -->
 The directory containing this README is a complete standalone repository tree.
-Its intended publishing location is `keneanung/teddycloud-audiobooks`; publication
-and Marketplace catalog inclusion are separate steps (see [publishing](docs/publishing.md)).
-Once published, add its public GitHub URL as an **Integration** custom repository
+Published at [keneanung/ha-teddycloud-audiobooks](https://github.com/keneanung/ha-teddycloud-audiobooks).
+Marketplace catalog inclusion is a separate step (see [publishing](docs/publishing.md)).
+Add its public GitHub URL as an **Integration** custom repository
 in Marketplace (HACS on older HA installations), download, and restart HA.
 For manual installation, copy `custom_components/teddycloud_audiobooks` into
 HA's `/config/custom_components/` and restart after configuration.
