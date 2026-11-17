@@ -1,0 +1,15 @@
+{
+  "domain": "teddycloud_audiobooks",
+  "name": "TeddyCloud Audiobooks",
+  "version": "0.1.0",
+  "documentation": "https://github.com/keneanung/teddycloud-audiobooks",
+  "dependencies": [
+    "mqtt"
+  ],
+  "codeowners": [
+    "@keneanung"
+  ],
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/keneanung/teddycloud-audiobooks/issues",
+  "integration_type": "service"
+}

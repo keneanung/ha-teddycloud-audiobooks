@@ -1,0 +1,20 @@
+# Merge under HA configuration.yaml or packages. Do not enable before replacing
+# the example TAF metadata with actual paths and embedded audio IDs.
+teddycloud_audiobooks:
+  url: http://192.0.2.10
+  # username: !secret teddycloud_username
+  # password: !secret teddycloud_password
+  topic: teddyCloud
+  boxes:
+    - 001122334455
+  threshold_seconds: 600 # use 30 for the supervised pilot
+  books:
+    E004035000000001:
+      name: Example audiobook
+      segments:
+        - title: Test 1 (replace before enabling)
+          source: lib://AudiobookSegments/Example/test-01.taf
+          audio_id: 100000001 # EXAMPLE ONLY: use actual embedded ID
+        - title: Test 2 (replace before enabling)
+          source: lib://AudiobookSegments/Example/test-02.taf
+          audio_id: 100000002 # EXAMPLE ONLY: use actual embedded ID

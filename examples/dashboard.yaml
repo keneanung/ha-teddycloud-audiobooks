@@ -1,0 +1,7 @@
+type: entities
+title: Hörbuchfortschritt
+entities:
+  - entity: select.audiobook
+    name: Hörbuch / Tag
+  - entity: select.audiobook_segment
+    name: Für die nächste Sitzung vorbereitet
