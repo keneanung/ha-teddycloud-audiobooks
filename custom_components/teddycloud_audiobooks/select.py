@@ -3,7 +3,7 @@ from homeassistant.components.select import SelectEntity
 from . import DOMAIN
 
 
-async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
+async def async_setup_entry(hass, entry, async_add_entities):
     manager = hass.data[DOMAIN]
     async_add_entities([BookSelect(manager), SegmentSelect(manager)])
 
@@ -58,4 +58,4 @@ class SegmentSelect(BaseSelect):
                 "assignment_error": self.manager.errors.get(uid)}
 
     async def async_select_option(self, option):
-        await self.manager.choose_segment(self.options.index(option))
+        await self.manager.choose_segment(self.options.index(option), self.manager.selected)

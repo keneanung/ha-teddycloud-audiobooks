@@ -5,7 +5,8 @@ continues playing its current file. Progress belongs to the NFC tag, so the same
 book can move between configured boxes. Two selectors provide optional manual
 correction for any number of books.
 
-This is a YAML-configured custom integration. It uses HA's existing MQTT
+This custom integration is configured through **Settings → Devices & services**.
+It uses HA's existing MQTT
 integration, HA storage, and TeddyCloud's HTTP API. No extra running service,
 transcoding server, per-book helpers, scripts, or automations are needed.
 
@@ -25,30 +26,46 @@ For manual installation, copy `custom_components/teddycloud_audiobooks` into
 HA's `/config/custom_components/` and restart after configuration.
 <!-- ha-marketplace:exclude-end -->
 
-1. Prepare bounded, existing TAF files in TeddyCloud's library. Keep M4B originals.
-   Use unique embedded audio IDs per segment; preferably increasing IDs. Read the
-   real IDs from TeddyCloud's library index rather than guessing from filenames.
-2. Place the audiobook tag once to create its content metadata in TeddyCloud.
-   The integration deliberately requires that metadata to exist before writing.
-3. Copy [the example](examples/configuration.example.yaml) into HA configuration
-   or an existing packages directory. Replace the example URL, box certificate
-   common names, 16-digit uppercase tag UIDs (no colons), sources, and audio IDs.
-   `lib://` paths are relative to TeddyCloud's library. Configure only prepared
-   TAFs; an invalid source can cause TeddyCloud to attempt runtime transcoding.
-4. Use `!secret` for HTTP credentials when needed. Keep the API on a trusted LAN,
-   or use HTTPS with a certificate trusted by HA. The integration never disables
-   TLS verification. It does not change MQTT broker credentials or configuration.
-5. Ensure both boxes resolve the tag through the same TeddyCloud content namespace.
-   Per-box isolated content directories are outside this version's scope. To
-   support manual selection backwards with `live=false`, verify TeddyCloud's
-   `cloud.updateOnLowerAudioId=true` for the relevant boxes. This integration
-   does not modify global or per-box settings.
-6. Check HA configuration, restart, and add the [dashboard card](examples/dashboard.yaml).
-   Entity IDs normally are `select.audiobook` and `select.audiobook_segment`;
-   use their registered IDs if HA resolves a naming collision differently.
-7. Remove the tag, then place it again to establish a fresh session.
+1. Prepare bounded, existing TAF files in TeddyCloud's library, leaving M4B
+   originals unchanged. Give files sortable names such as `segment-01.taf`.
+   Each segment needs a distinct embedded audio ID.
+2. Place the book's tag once to create its metadata in TeddyCloud. Both boxes
+   must share the tag's content namespace. For manual selection backwards,
+   verify `cloud.updateOnLowerAudioId=true` in TeddyCloud's effective settings.
+3. In **Settings → Devices & services → Add integration**, select **TeddyCloud
+   Audiobooks**. Enter the server URL, MQTT prefix, one box certificate common
+   name per line, and the playback threshold (default 600 seconds). HTTP
+   credentials are optional; MQTT uses HA's existing broker configuration.
+4. Enter the audiobook name and tag UID, then choose its folder relative to
+   TeddyCloud's library, for example `AudiobookSegments/MyBook`. Select the TAF
+   files. The integration reads actual header IDs from TeddyCloud; you do not
+   enter them manually. The initial order follows filenames.
+5. Use **Configure** on the integration to edit connection settings, add/remove
+   books, replace a book's segment list from a library folder, rename segments,
+   or change their positions. Changes are staged until Save. Removing files
+   requires confirmation before an affected book can reset to segment 1.
+6. Add the [dashboard card](examples/dashboard.yaml). Existing entity IDs are
+   preserved across the YAML-to-UI migration. Normal IDs are `select.audiobook`
+   and `select.audiobook_segment`; use registered IDs if HA resolves a collision.
+7. Remove and replace the tag to establish a fresh session, and perform the
+   normal manual freshness check to load a changed assignment.
 
-Default threshold is 600 seconds. Use 30 during a supervised test with files
+The URL must be HTTP(S), without a query or fragment. Use a trusted LAN or HTTPS
+with a certificate trusted by HA; certificate verification is never disabled.
+Passwords are stored by Home Assistant in its private integration configuration,
+not in this repository. A blank password while editing preserves the saved one;
+clear the username to remove HTTP credentials.
+
+**Upgrading from 0.1 YAML:** existing YAML imports once into a single UI config
+entry while retaining saved progress and entity IDs. Verify the entry is loaded,
+then remove only the `teddycloud_audiobooks:` section from YAML. Keep unrelated
+package/dashboard settings. After import, Configure is authoritative; YAML does
+not overwrite an existing UI entry. [The YAML example](examples/configuration.example.yaml)
+is retained only for one-time import/migration. Settings changes reload the
+integration automatically and discard incomplete playback timers; no HA restart
+is required after UI edits.
+
+Default threshold is 600 seconds. Use 30 during a supervised pilot with files
 longer than 30 seconds, then restore 600 for ordinary listening.
 
 ## Behavior and persistence
@@ -80,12 +97,13 @@ Other metadata fields are preserved by TeddyCloud's partial form API.
 
 Indices and the segment source/ID catalog live in HA's
 `.storage/teddycloud_audiobooks`, included in normal HA configuration backups.
-Back it up before edits. Do not reorder or replace an existing book's segment
-catalog in place: startup rejects a changed catalog to avoid silently moving
-progress to a different chapter. To migrate, stop HA, back up the storage file,
-and explicitly migrate its matching catalog and zero-based index, or remove that
-tag's saved catalog/index to intentionally reset it. Add new books with new tag
-UIDs; no new helpers or automations are needed. Restart after YAML changes.
+Back it up before edits. UI reordering preserves progress by matching the assigned
+segment's source and audio ID, rather than blindly retaining its old numerical
+position. If that segment is removed or replaced, Save requires permission to
+reset the affected book to segment 1. Surviving segments keep their progress.
+Adding books requires no additional helpers or automations. Configuration lives
+in the native HA config entry; include it and the progress Store in backups.
+Avoid editing `.storage` manually.
 
 ## Limits
 

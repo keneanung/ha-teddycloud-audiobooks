@@ -16,11 +16,11 @@ steps.
    unsorted manifest keys; ensure the corrected revision passes. Local/runtime
    tests are a separate check.
 3. Resolve any upstream-validator findings, then make a GitHub release matching
-   `manifest.json` version `0.1.0`. A tag alone is not sufficient for catalog
+   `manifest.json` version `0.2.0`. A tag alone is not sufficient for catalog
    inclusion. The normal repository layout does not require a release ZIP.
 4. Install via Marketplace's custom repository URL and verify download/update
-   on a disposable HA installation before inviting wider use. Installation
-   still requires YAML configuration; there is no configuration-flow UI.
+   on a disposable HA installation before inviting wider use. Configuration is available through the native Devices & services UI; existing
+   YAML imports once on upgrade.
 5. Catalog listing is optional. After checks and a full release pass, the owner
    can submit the repository to the `integration` list in `hacs/default`.
    This is separate from custom-repository installability.

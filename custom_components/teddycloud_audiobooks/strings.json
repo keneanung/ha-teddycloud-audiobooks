@@ -1,0 +1,177 @@
+{
+  "title": "TeddyCloud Audiobooks",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to TeddyCloud",
+        "description": "Uses your existing Home Assistant MQTT integration. Enter the box certificate common names, not display names.",
+        "data": {
+          "url": "TeddyCloud URL",
+          "topic": "MQTT topic prefix",
+          "boxes": "Toniebox certificate common names (one per line)",
+          "threshold_seconds": "Playback threshold (seconds)",
+          "username": "HTTP username (optional)",
+          "password": "HTTP password (leave blank to keep the saved password)"
+        }
+      },
+      "book": {
+        "title": "Add audiobook",
+        "description": "Use the NFC tag UID; colons and lowercase letters are accepted.",
+        "data": {
+          "name": "Audiobook name",
+          "uid": "NFC tag UID"
+        }
+      },
+      "folder": {
+        "title": "Choose a library folder",
+        "description": "Enter a folder relative to TeddyCloud’s library, for example AudiobookSegments/MyBook. Only existing, valid TAF files can be selected.",
+        "data": {
+          "folder": "Library folder"
+        }
+      },
+      "files": {
+        "title": "Choose ordered segments",
+        "description": "Selected files are initially ordered by filename. Existing titles are preserved. You can change names and positions later using Edit segment. This replaces the selected book’s segment list.",
+        "data": {
+          "files": "TAF files"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not read TeddyCloud. Check the URL, credentials and library folder.",
+      "no_tafs": "No valid TAF files were found in this folder.",
+      "invalid_uid": "Enter a 16-digit hexadecimal UID.",
+      "duplicate_uid": "This tag is already configured.",
+      "invalid_config": "The configuration is invalid; use distinct audio IDs and at least one segment per book.",
+      "select_files": "Select at least one TAF file.",
+      "last_segment": "A book must keep at least one segment.",
+      "confirm_reset": "Confirm the possible progress reset before saving."
+    },
+    "abort": {
+      "already_configured": "TeddyCloud Audiobooks is already configured. Use Configure on its existing entry.",
+      "invalid_config": "The configuration is invalid. Verify the files, audio IDs and book details.",
+      "last_book": "Keep at least one audiobook. To remove the last book, remove the integration instead."
+    }
+  },
+  "options": {
+    "step": {
+      "user": {
+        "title": "Connect to TeddyCloud",
+        "description": "Uses your existing Home Assistant MQTT integration. Enter the box certificate common names, not display names.",
+        "data": {
+          "url": "TeddyCloud URL",
+          "topic": "MQTT topic prefix",
+          "boxes": "Toniebox certificate common names (one per line)",
+          "threshold_seconds": "Playback threshold (seconds)",
+          "username": "HTTP username (optional)",
+          "password": "HTTP password (leave blank to keep the saved password)"
+        }
+      },
+      "book": {
+        "title": "Add audiobook",
+        "description": "Use the NFC tag UID; colons and lowercase letters are accepted.",
+        "data": {
+          "name": "Audiobook name",
+          "uid": "NFC tag UID"
+        }
+      },
+      "folder": {
+        "title": "Choose a library folder",
+        "description": "Enter a folder relative to TeddyCloud’s library, for example AudiobookSegments/MyBook. Only existing, valid TAF files can be selected.",
+        "data": {
+          "folder": "Library folder"
+        }
+      },
+      "files": {
+        "title": "Choose ordered segments",
+        "description": "Selected files are initially ordered by filename. Existing titles are preserved. You can change names and positions later using Edit segment. This replaces the selected book’s segment list.",
+        "data": {
+          "files": "TAF files"
+        }
+      },
+      "init": {
+        "title": "Configure TeddyCloud Audiobooks",
+        "menu_options": {
+          "connection": "Connection, boxes and threshold",
+          "edit_book": "Edit an audiobook",
+          "add_book": "Add an audiobook",
+          "remove_book": "Remove an audiobook"
+        }
+      },
+      "connection": {
+        "title": "Connection and playback threshold",
+        "data": {
+          "url": "TeddyCloud URL",
+          "topic": "MQTT topic prefix",
+          "boxes": "Toniebox certificate common names (one per line)",
+          "threshold_seconds": "Playback threshold (seconds)",
+          "username": "HTTP username (optional)",
+          "password": "HTTP password (leave blank to keep the saved password)"
+        }
+      },
+      "edit_book": {
+        "title": "Choose an audiobook",
+        "data": {
+          "uid": "Audiobook"
+        }
+      },
+      "book_menu": {
+        "title": "Edit audiobook",
+        "menu_options": {
+          "rename": "Rename audiobook",
+          "folder": "Replace segment list from a library folder",
+          "segment": "Rename, move or remove a segment"
+        }
+      },
+      "rename": {
+        "title": "Rename audiobook",
+        "data": {
+          "name": "Audiobook name"
+        }
+      },
+      "segment": {
+        "title": "Choose a segment",
+        "data": {
+          "segment": "Segment"
+        }
+      },
+      "segment_edit": {
+        "title": "Edit segment",
+        "data": {
+          "title": "Segment title",
+          "position": "Position in the audiobook",
+          "remove": "Remove this segment"
+        }
+      },
+      "remove_book": {
+        "title": "Remove an audiobook",
+        "description": "This stops managing the tag. It does not delete TAF files or restore the tag’s previous TeddyCloud assignment.",
+        "data": {
+          "uid": "Audiobook to remove"
+        }
+      },
+      "confirm": {
+        "title": "Save configuration",
+        "description": "Save {books} audiobook(s) with {segments} segment(s). {resets} book(s) have removed or replaced segments. Existing progress follows the same source/audio ID when possible. If its assigned segment was removed, the checkbox allows resetting that book to segment 1. All active playback timers are discarded when settings reload.",
+        "data": {
+          "allow_reset": "Allow progress to reset to segment 1 if its assigned segment was removed"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not read TeddyCloud. Check the URL, credentials and library folder.",
+      "no_tafs": "No valid TAF files were found in this folder.",
+      "invalid_uid": "Enter a 16-digit hexadecimal UID.",
+      "duplicate_uid": "This tag is already configured.",
+      "invalid_config": "The configuration is invalid; use distinct audio IDs and at least one segment per book.",
+      "select_files": "Select at least one TAF file.",
+      "last_segment": "A book must keep at least one segment.",
+      "confirm_reset": "Confirm the possible progress reset before saving."
+    },
+    "abort": {
+      "already_configured": "TeddyCloud Audiobooks is already configured. Use Configure on its existing entry.",
+      "invalid_config": "The configuration is invalid. Verify the files, audio IDs and book details.",
+      "last_book": "Keep at least one audiobook. To remove the last book, remove the integration instead."
+    }
+  }
+}
